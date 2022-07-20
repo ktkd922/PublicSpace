@@ -12,8 +12,8 @@ operators = ['/', '*', '-', '+']
 
 btn_width = 4
 btn_height = 2
-root_x = 250
-root_y = 370
+root_x = 248
+root_y = 360
 
 
 class Application(tk.Frame):
@@ -24,45 +24,58 @@ class Application(tk.Frame):
         self.calc_str = ''
         self.calc_var = 0
         self.master.geometry(f"{root_x}x{root_y}")
-        self.master.title("Application")
+        self.master.resizable(width=False, height=False)
+        self.master.title("Calculator")
         self.create_widgets()
 
         self.grid(column=0, row=0)
 
         # 計算結果の表示領域
         self.label_test = ttk.Label(self)
-        self.label_test.configure(text='test', font=('', 22))
+        self.label_test.configure(text='', font=('', 22))
         self.label_test.pack()
         self.label_test.grid(column=0, row=0, columnspan=4, sticky=tk.E)
 
         def return_key(event):
             key = event.widget['text']
 
-            if key == 'AC' or key == 'C':
+            if key == 'AC':
                 self.calc_str = ''
                 self.calc_var = 0
+            
+            elif key == 'C':
+                self.calc_str = self.calc_str[:-1]
 
             elif key == '=':
                 try:
                     self.calc_var = eval(self.calc_str)
                     self.calc_str = str(self.calc_var)
                 except:
+                    # print('Error')
+                    self.label_test.configure(text='Error', font=('', 22))
                     self.calc_str = ''
                     self.calc_var = 0
-                    print('Error')
-
-            elif key in operators:
-                self.calc_var = eval(self.calc_str)
-                self.calc_str += " "
-                self.calc_str += key
-                self.calc_str += " "
+                    return
             
+            elif key == '-':    # マイナスは負数の場合もあるので別扱い
+                if self.calc_str and (self.calc_str[-1] in operators):
+                    return
+                elif self.calc_str == '':
+                    self.calc_str += '-'
+                else:
+                    self.calc_var = eval(self.calc_str)
+                    self.calc_str += key
+                
+            elif key in operators:
+                if self.calc_str and (self.calc_str[-1] not in operators):
+                    self.calc_var = eval(self.calc_str)
+                    self.calc_str += key
+                
             else:
                 self.calc_str += key
-                
-    
-            print(self.calc_str, ',', self.calc_var)
-
+            
+            # print(self.calc_str, ',', self.calc_var)
+            self.label_test.configure(text=self.calc_str, font=('', 22))
 
         # ボタンを配置
         for i in range(5):
