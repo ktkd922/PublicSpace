@@ -8,7 +8,7 @@ keys = [['AC', 'C', 'C', '/'],
         ['1', '2', '3', '+'],
         ['0', '0', '.', '=']]
 
-operators = ['/', '*', '-', '+', '=']
+operators = ['/', '*', '-', '+']
 
 btn_width = 4
 btn_height = 2
@@ -20,7 +20,7 @@ class Application(tk.Frame):
     def __init__(self,master):
         super().__init__(master)
         self.pack()
-        
+
         self.calc_str = ''
         self.calc_var = 0
         self.master.geometry(f"{root_x}x{root_y}")
@@ -42,6 +42,15 @@ class Application(tk.Frame):
                 self.calc_str = ''
                 self.calc_var = 0
 
+            elif key == '=':
+                try:
+                    self.calc_var = eval(self.calc_str)
+                    self.calc_str = str(self.calc_var)
+                except:
+                    self.calc_str = ''
+                    self.calc_var = 0
+                    print('Error')
+
             elif key in operators:
                 self.calc_var = eval(self.calc_str)
                 self.calc_str += " "
@@ -50,6 +59,7 @@ class Application(tk.Frame):
             
             else:
                 self.calc_str += key
+                
     
             print(self.calc_str, ',', self.calc_var)
 
