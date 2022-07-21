@@ -2,8 +2,9 @@ import tkinter as tk
 from tkinter import ttk
 
 
-# ボタンの配置を二次元配列に格納。後で（）キーを追加する。
-keys = [['AC', 'C', 'C', '/'],
+# ボタンの配置を二次元配列に格納
+keys = [['(', ')', '', ''],
+        ['AC', 'C', '', '/'],
         ['7', '8', '9', '*'],
         ['4', '5', '6', '-'],
         ['1', '2', '3', '+'],
@@ -43,8 +44,8 @@ class Application(tk.Frame):
         self.label_test.pack()
         self.label_test.grid(column=0, row=0, columnspan=4, sticky=tk.E)
 
-        for i in range(5):      # ボタンを配置
-            for j in range(4):
+        for i in range(len(keys)):      # ボタンを配置
+            for j in range(len(keys[0])):
                 key = keys[i][j]
                 button = tk.Button(self, text=key, font=('', btn_fontsize),
                                    width=btn_width, height=btn_height)
@@ -52,7 +53,7 @@ class Application(tk.Frame):
                 button.grid(column=j, row=i+1, sticky=tk.NSEW)
 
         button_0 = tk.Button(self, text='0', font=('', btn_fontsize))
-        button_0.grid(column=0, row=5, columnspan=2, sticky=tk.NSEW)
+        button_0.grid(column=0, row=6, columnspan=2, sticky=tk.NSEW)
         button_0.bind('<1>', self.apply_key)
 
 
@@ -81,7 +82,7 @@ class Application(tk.Frame):
             elif self.calc_str[-1] in operators:
                 self.calc_str = self.calc_str[:-1] + '-'
             else:
-                self.calc_var = eval(self.calc_str)
+                self.calc_var = eval(self.calc_str)     # 文字列を数式として評価。この方法だと複雑な関数は使えない。
                 self.calc_str += key
         
         elif key in operators:
