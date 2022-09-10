@@ -44,8 +44,8 @@ data = data.drop(data.columns[4:], axis=1)
 # 単位の変換
 data['DSC'] = data['DSC'] / sample_weight
 data['DDSC'] = data['DDSC'] / sample_weight
-data.set_axis(['Time / min', 'DSC / µW mg-1', 'Temp / dC',
-              'DDSC / µW mg-1min-1'], axis='columns', inplace=True)
+data.set_axis(['Time / min', 'Temp / dC', 'DSC / microW mg-1',
+              'DDSC / microW mg-1min-1'], axis='columns', inplace=True)
 
 # 保存
 data.to_csv(filename.removesuffix('.xlsx') + '.csv', index=False)
